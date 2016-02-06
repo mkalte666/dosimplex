@@ -1,0 +1,16 @@
+build/
+doc/
+ddoc/
+import/
+lib/
+*.sln
+*.visualdproj
+*.suo
+.vs/
+*.lib
+.dub/*
+*.exe_cv
+*.exe
+*.a
+*.obj
+*.selections.json

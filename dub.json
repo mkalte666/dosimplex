@@ -1,0 +1,15 @@
+﻿{
+    "name": "dosimplex",
+    "description": "D OpenSimplexNoise Implementation",
+    "copyright": "Copyright © 2016 Malte Kiessling",
+    "license": "MIT",
+    "targetType": "staticLibrary",
+    "targetName": "dosimplex",
+    "sourcePaths": ["dosimplex"],
+    "importPaths": ["."],
+    "authors": [
+        "Malte Kiessling"
+    ],
+    "dependencies": {
+    }
+}
