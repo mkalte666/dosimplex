@@ -24,18 +24,18 @@ struct Seed
 
 
     /// gets the seed
-    @nogc @property long seed()
+    @nogc @safe @property long seed() const
     {
         return _seed;
     }
     /// sets the seed
-    @nogc @property long seed(long s)
+    @nogc @safe @property long seed(long s) 
     {
         return _seed=s;
     }
     /// sets the seed from string
     /// uses djb2 - http://www.cse.yorku.ca/~oz/hash.html
-    @nogc @property long seed(string s)
+    @nogc @safe @property long seed(string s)
     {
         _seed = 5381;
         foreach(c; s) {
@@ -46,13 +46,13 @@ struct Seed
     }
     
     /// returns the floating point represenatation of this seed
-    @nogc @property float fSeed()
+    @nogc @safe @property float fSeed() const
     {
         return cast(float)_seed;
     }
 
     /// Ditto
-    @nogc @property double dSeed()
+    @nogc @safe @property double dSeed() const
     {
         return cast(double)_seed;
     }

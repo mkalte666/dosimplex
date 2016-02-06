@@ -4,6 +4,8 @@
 module dosimplex.generator;
 
 import dosimplex.osimplex2d;
+import dosimplex.osimplex3d;
+import dosimplex.osimplex4d;
 import dosimplex.seed;
 import dosimplex.util;
 
@@ -13,17 +15,7 @@ import dosimplex.util;
     somehow impelments OpenSimplexNoise - https://gist.github.com/KdotJPG/b1270127455a94ac5d19 and http://uniblock.tumblr.com/  
 */
 struct SNoiseGenerator
-{
-    /// 
-    enum : double {
-        STRETCH_CONSTANT_3D = -1.0 / 6,              ///(1/Math.sqrt(3+1)-1)/3;
-        SQUISH_CONSTANT_3D = 1.0 / 3,                ///(Math.sqrt(3+1)-1)/3;
-        STRETCH_CONSTANT_4D = -0.138196601125011,    ///(1/Math.sqrt(4+1)-1)/4;
-        SQUISH_CONSTANT_4D = 0.309016994374947,      ///(Math.sqrt(4+1)-1)/4;
-        NORM_CONSTANT_3D = 103.,
-        NORM_CONSTANT_4D = 30.,
-    };
-    
+{    
     /// (Default) Values for noise generation
     enum : long {
         DEFAULT_SEED = 1787569, /// why not
@@ -33,7 +25,7 @@ struct SNoiseGenerator
     @disable this();
     
     /// Initializes a generator from a long seed 
-    @nogc this(long seed)
+    @nogc @safe this(long seed)
     {
         short[256] source;
         for (short i=0; i<256; i++) {
@@ -54,7 +46,7 @@ struct SNoiseGenerator
     }
     
     /// Initializes a generator from a Seed struct 
-    @nogc this(Seed seed)
+    @nogc @safe this(Seed seed)
     {
         this(seed.seed);
     }
@@ -78,6 +70,28 @@ struct SNoiseGenerator
     @nogc @safe pure double noise2D(const double[2] p)
     {
         return osNoise2D(p[0],p[1],_perm);
+    }
+
+    /// 3D OpenSimplexNoise
+    @nogc @safe pure double noise3D(double x, double y, double z)
+    {
+        return osNoise3D(x,y,z,_perm,_permGradIndex3D);
+    }
+    /// Ditto
+    @nogc @safe pure double noise3D(const double[3] p)
+    {
+        return osNoise3D(p[0],p[1],p[2],_perm,_permGradIndex3D);
+    }
+    
+    /// 3D OpenSimplexNoise
+    @nogc @safe pure double noise4D(double x, double y, double z, double w)
+    {
+        return osNoise4D(x,y,z,w,_perm);
+    }
+    /// Ditto
+    @nogc @safe pure double noise4D(const double[4] p)
+    {
+        return osNoise4D(p[0],p[1],p[2],p[3],_perm);
     }
 
 private:

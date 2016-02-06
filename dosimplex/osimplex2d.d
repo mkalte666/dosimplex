@@ -138,4 +138,3 @@ private @nogc @safe pure double extrapolate(int xsb, int ysb, double dx, double 
     int index = perm[(perm[xsb & 0xFF] + ysb) & 0xFF] & 0x0E;
     return GRADIENTS.GRADIENTS_2D[index] * dx + GRADIENTS.GRADIENTS_2D[index + 1] * dy;
 }
-
