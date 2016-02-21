@@ -24,6 +24,7 @@ if (D > 0 && D < 5)
             args = var length arguments 
                 - slice 0..D is the values for the dimensions
                 - D..$ is the slice with the layers - they can be double or instance of layer
+                - The Layers can also have other types as long as they have a "equal"-function that has the signature as in the layer interface.
     */
     @nogc @safe pure double generic(A...) (LayerCombineFunc f, A args)
     if (args.length > D+1)
@@ -42,17 +43,16 @@ if (D > 0 && D < 5)
         foreach(size_t i, a;layers) {
             import std.traits;
 
+            double x = 0.0;
+
             static if (is(typeof(a) == double)) {
-                double x = a;
+                x = a;
             }
-            else if (cast(Layer)a) {
-                double x = a.eval!D(dimensions);
-            }
-            else {
-                double x = 0.0;
-                pragma(msg, "Can only accept Layers and doubles as arguments for noise functions!");
-                assert(false);
-                
+            else static if(__traits(compiles, a.eval(dimensions))) {
+                x = a.eval(dimensions);
+            } else {
+                pragma(msg, __FILE__, "(", __LINE__, "): Can only accept Layers and doubles as arguments for noise functions!");
+                static assert(false);               
             }
             
             static if (i == 0) { // see declaration of result
