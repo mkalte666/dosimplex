@@ -26,7 +26,7 @@ if (D > 0 && D < 5)
                 - D..$ is the slice with the layers - they can be double or instance of layer
                 - The Layers can also have other types as long as they have a "equal"-function that has the signature as in the layer interface.
     */
-    @nogc @safe pure double generic(A...) (LayerCombineFunc f, A args)
+    @safe pure double generic(A...) (LayerCombineFunc f, A args)
     if (args.length > D+1)
     {
         auto layers = args[D..$];
@@ -51,7 +51,7 @@ if (D > 0 && D < 5)
             else static if(__traits(compiles, a.eval(dimensions))) {
                 x = a.eval(dimensions);
             } else {
-                pragma(msg, __FILE__, "(", __LINE__, "): Can only accept Layers and doubles as arguments for noise functions!");
+                pragma(msg, __FILE__, "(", __LINE__, "): Can only accept Layers and doubles as arguments for noise functions - not ", typeof(a), "!");
                 static assert(false);               
             }
             
@@ -73,7 +73,7 @@ if (D > 0 && D < 5)
             - slice 0..D is the values for the dimensions
             - D..$ is the slice with the layers - they can be double or instance of layer
     */
-    @nogc @safe pure double add(L...) (L args)
+    @safe pure double add(L...) (L args)
     {
         return CombineLayers!D.generic(function (double l,double r) => l+r, args);
     }
@@ -85,7 +85,7 @@ if (D > 0 && D < 5)
                 - slice 0..D is the values for the dimensions
                 - D..$ is the slice with the layers - they can be double or instance of layer
     */
-    @nogc @safe pure double sub(L...) (lazy L args)
+    @safe pure double sub(L...) (lazy L args)
     {
         return CombineLayers!D.generic(function (double l,double r) => l-r, args);
     }
@@ -97,7 +97,7 @@ if (D > 0 && D < 5)
                 - slice 0..D is the values for the dimensions
                 - D..$ is the slice with the layers - they can be double or instance of layer
     */
-    @nogc @safe pure double mul(L...) (lazy L args)
+    @safe pure double mul(L...) (lazy L args)
     {
         return CombineLayers!D.generic(function (double l,double r) => l*r, args);
     }
@@ -109,7 +109,7 @@ if (D > 0 && D < 5)
                 - slice 0..D is the values for the dimensions
                 - D..$ is the slice with the layers - they can be double or instance of layer
     */
-    @nogc @safe pure double pow(L...) (lazy L args)
+    @safe pure double pow(L...) (lazy L args)
     {
         import std.math;
         return CombineLayers!D.generic(function (double l,double r) => pow(l,r), args);

@@ -20,19 +20,17 @@ class OpenSimplexNoiseLayer : Layer
     @nogc @safe pure double eval(D...)(D dimensions)
     if (dimensions.length > 0 && dimensions.length < 5)
     {
-        final switch(dimensions.length) {
-            case 1:
-                return _gen.noise2D(dimensions,0.0); // TODO: im unhappy with this.
-            case 2:     
-                return _gen.noise2D(dimensions);
-                break;
-            case 3:
-                return _gen.noise3D(dimensions);
-                break;
-            case 4:
-                return _gen.noise4D(dimensions);
-                break;
+        static if (dimensions.length == 1) {
+            return _gen.noise2D(dimensions,0.0); // TODO: im unhappy with this.
+        } else static if (dimensions.length == 2) {
+            return _gen.noise2D(dimensions);
+        } else static if (dimensions.length == 3) {
+            return _gen.noise3D(dimensions);
+        } else static if (dimensions.length == 4) {
+            return _gen.noise4D(dimensions);
         }
+
+        assert(0);
     }
 
 private:
