@@ -18,9 +18,11 @@ class OpenSimplexNoiseLayer : Layer
     }
 
     @nogc @safe pure double eval(D...)(D dimensions)
-    if (dimensions.length > 1 && dimensions.length < 5)
+    if (dimensions.length > 0 && dimensions.length < 5)
     {
         final switch(dimensions.length) {
+            case 1:
+                return _gen.noise2D(dimensions,0.0); // TODO: im unhappy with this.
             case 2:     
                 return _gen.noise2D(dimensions);
                 break;
@@ -36,3 +38,24 @@ class OpenSimplexNoiseLayer : Layer
 private:
     SNoiseGenerator _gen;
 }
+
+/// Default layer for sine function
+class SineLayer : Layer 
+{
+    @nogc @safe pure double eval(D...)(D dimensions)
+    if (dimensions.length > 0 && dimensions.length < 5)
+    {
+        import math;
+        double result = 0.0;    // we dont set to 1.0 and then just multiply to avoid this tiny bit of error it might cause - and its probably a tiny bit faster
+        foreach(int i,d; dimensions) {
+            static if(d < 1) {
+                result = sin(d);
+            } else {
+                result = result*sin(d);
+            }
+        }
+
+        return result;
+    }
+}
+
